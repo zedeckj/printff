@@ -1,0 +1,29 @@
+#ifndef PRINTFFHEADER
+#define PRINTFFHEADER
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdarg.h>
+
+#define VOIDP_ANN 0
+#define CHRP_ANN 1
+#define INT_ANN 2
+#define UINT_ANN 3
+#define SHORT_ANN 4
+#define USHORT_ANN 5
+#define CHAR_ANN 6
+#define UCHAR_ANN 7
+#define LONG_ANN 8
+#define ULONG_ANN 9
+#define LONGLONG_ANN 10
+#define ULONGLONG_ANN 11
+#define FLOAT_ANN 12
+#define DOUBLE_ANN 14
+
+#define _ANNOTATE(X) _Generic((X), default: VOIDP_ANN, char *: CHRP_ANN, int: INT_ANN, \
+								unsigned int: UINT_ANN, short: SHORT_ANN, unsigned short: USHORT_ANN, \
+								char: CHAR_ANN, unsigned char: UCHAR_ANN, long: LONG_ANN, unsigned long: ULONG_ANN, \
+								long long: LONGLONG_ANN, unsigned long long: ULONGLONG_ANN, \
+								float: FLOAT_ANN, double: DOUBLE_ANN), X
+
+
+
