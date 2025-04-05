@@ -16,8 +16,10 @@ def gen_macro():
     return macros 
 with open("prelude.txt", "r") as f:
     prelude = f.read() + "\n"
+
 with open("post.txt", "r") as f:
     post = "\n" + f.read() + "\n"
 
-with open("printff.h", "w") as f:
+with open("../printff.h", "w") as f:
     f.write(prelude + gen_macro() + post)
+    print("code gen complete")

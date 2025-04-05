@@ -139,48 +139,59 @@
 #define printff(...) _OVERRIDE_PRINTFF(__VA_ARGS__,  _PRINTFF52 , _PRINTFF51 , _PRINTFF50 , _PRINTFF49 , _PRINTFF48 , _PRINTFF47 , _PRINTFF46 , _PRINTFF45 , _PRINTFF44 , _PRINTFF43 , _PRINTFF42 , _PRINTFF41 , _PRINTFF40 , _PRINTFF39 , _PRINTFF38 , _PRINTFF37 , _PRINTFF36 , _PRINTFF35 , _PRINTFF34 , _PRINTFF33 , _PRINTFF32 , _PRINTFF31 , _PRINTFF30 , _PRINTFF29 , _PRINTFF28 , _PRINTFF27 , _PRINTFF26 , _PRINTFF25 , _PRINTFF24 , _PRINTFF23 , _PRINTFF22 , _PRINTFF21 , _PRINTFF20 , _PRINTFF19 , _PRINTFF18 , _PRINTFF17 , _PRINTFF16 , _PRINTFF15 , _PRINTFF14 , _PRINTFF13 , _PRINTFF12 , _PRINTFF11 , _PRINTFF10 , _PRINTFF9 , _PRINTFF8 , _PRINTFF7 , _PRINTFF6 , _PRINTFF5 , _PRINTFF4 , _PRINTFF3 , _PRINTFF2 , _PRINTFF1 )(__VA_ARGS__)
 
 #endif
+#define _print_type_helper switch (va_arg(argp, int)) { \
+					case VOIDP_ANN: l += printf("%p", va_arg(argp, void*)); \
+					break; \
+					case CHRP_ANN: l += printf("%s", va_arg(argp, char*)); \
+					break; \
+					case INT_ANN: l += printf("%d", va_arg(argp, int)); \
+					break; \
+					case UINT_ANN: l += printf("%u", va_arg(argp, unsigned int)) ; \
+					break; \
+					case SHORT_ANN: l += printf("%hi", va_arg(argp, int)); \
+					break; \
+					case USHORT_ANN: l += printf("%hu", va_arg(argp, int)); \
+					break; \
+					case CHAR_ANN: l += printf("%c", va_arg(argp, int)); \
+					break; \
+					case UCHAR_ANN: l += printf("%c", va_arg(argp, int)); \
+					break; \
+					case LONG_ANN: l += printf("%ld", va_arg(argp, long)); \
+					break; \
+					case ULONG_ANN: l += printf("%lu", va_arg(argp, unsigned long)); \
+					break; \
+					case LONGLONG_ANN: l += printf("%lld", va_arg(argp, long long)); \
+					break; \
+					case ULONGLONG_ANN: l += printf("%llu", va_arg(argp, unsigned long long)); \
+					break; \
+					case FLOAT_ANN:  \
+					case DOUBLE_ANN: l += printf("%f", va_arg(argp, double)); \
+				} \
+
 int printff_func(char * fmt, ...) {
 	va_list argp;
 	va_start(argp, fmt);
+	int l = 0;
 	while (*fmt) {
 		if (*fmt == '%') {
 			fmt++;
+			_print_type_helper
+			
 			if (*fmt != '%') {
-				switch (va_arg(argp, int)) {
-					case VOIDP_ANN: printf("%p", va_arg(argp, void*)); 
-					break;
-					case CHRP_ANN: printf("%s", va_arg(argp, char*));
-					break;
-					case INT_ANN: printf("%d", va_arg(argp, int));
-					break;
-					case UINT_ANN: printf("%u", va_arg(argp, unsigned int));
-					break;
-					case SHORT_ANN: printf("%hi", va_arg(argp, int));
-					break;
-					case USHORT_ANN: printf("%hu", va_arg(argp, int));
-					break;
-					case CHAR_ANN: printf("%c", va_arg(argp, int));
-					break;
-					case UCHAR_ANN: printf("%c", va_arg(argp, int)); //check
-					break;
-					case LONG_ANN: printf("%ld", va_arg(argp, long));
-					break;
-					case ULONG_ANN: printf("%lu", va_arg(argp, unsigned long));
-					break;
-					case LONGLONG_ANN: printf("%lld", va_arg(argp, long long));
-					break;
-					case ULONGLONG_ANN: printf("%llu", va_arg(argp, unsigned long long));
-					break;
-					case FLOAT_ANN: 
-					case DOUBLE_ANN: printf("%f", va_arg(argp, double));
-				}
+							
 			}
-			else putchar(*fmt++);
+			else {
+				putchar(*fmt++);
+				l++;
+			}
 		}
-		else putchar(*fmt++);
+		else {
+			putchar(*fmt++);
+			l++;
+		}
 	}
 	va_end(argp);
-	return 0;
+	return l;
 }
 
 
