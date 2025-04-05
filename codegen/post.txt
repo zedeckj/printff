@@ -34,10 +34,8 @@ int printff_func(char * fmt, ...) {
 	while (*fmt) {
 		if (*fmt == '%') {
 			fmt++;
-			_print_type_helper
-			
-			if (*fmt != '%') {
-							
+			if (*fmt != '%') { 
+				_print_type_helper
 			}
 			else {
 				putchar(*fmt++);
