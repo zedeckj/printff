@@ -12,7 +12,7 @@ def gen_macro():
     macro_names = list(reversed([f" _PRINTFF{i} " for i in range(1, MAX_C)]))
     ovr_args = ",".join([f"_{i}" for i in range(1,MAX_C)] + ["NAME", "..."])
     macros += f"\n\n#define _OVERRIDE_PRINTFF({ovr_args}) NAME"
-    macros += f"\n\n#define printff(...) _OVERRIDE_PRINTFF(__VA_ARGS__, {",".join(macro_names)})(__VA_ARGS__)\n\n#endif"
+    macros += f"\n\n#define printff(...) _OVERRIDE_PRINTFF(__VA_ARGS__, {",".join(macro_names)})(__VA_ARGS__)\n"
     return macros 
 with open("prelude.txt", "r") as f:
     prelude = f.read() + "\n"
@@ -21,5 +21,5 @@ with open("post.txt", "r") as f:
     post = "\n" + f.read() + "\n"
 
 with open("../printff.h", "w") as f:
-    f.write(prelude + gen_macro() + post)
+    f.write(prelude + gen_macro() + post + "\n#endif")
     print("code gen complete")
